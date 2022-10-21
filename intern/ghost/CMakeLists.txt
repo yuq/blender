@@ -84,7 +84,7 @@ if(WITH_VULKAN_BACKEND)
   )
 
   list(APPEND INC_SYS
-    ${Vulkan_INCLUDE_DIRS}
+    ${VULKAN_INCLUDE_DIR}
   )
 endif()
 

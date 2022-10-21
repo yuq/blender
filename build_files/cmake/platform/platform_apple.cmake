@@ -101,7 +101,7 @@ if(WITH_USD)
 endif()
 
 if(WITH_VULKAN_BACKEND)
-  find_package_wrapper(Vulkan REQUIRED)
+  find_package(VULKAN REQUIRED)
 endif()
 
 if(WITH_OPENSUBDIV)
