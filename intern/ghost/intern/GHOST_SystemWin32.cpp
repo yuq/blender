@@ -256,7 +256,20 @@ GHOST_IContext *GHOST_SystemWin32::createOffscreenContext(GHOST_GLSettings glSet
 {
   const bool debug_context = (glSettings.flags & GHOST_glDebugContext) != 0;
 
-  GHOST_Context *context;
+  GHOST_Context *context = nullptr;
+
+#ifdef WITH_VULKAN_BACKEND
+  /* Vulkan does not need a window. */
+  if (glSettings.context_type == GHOST_kDrawingContextTypeVulkan) {
+    context = new GHOST_ContextVK(false, (HWND)0, 1, 0, debug_context);
+
+    if (!context->initializeDrawingContext()) {
+      delete context;
+      return nullptr;
+    }
+    return context;
+  }
+#endif
 
   HWND wnd = CreateWindowA("STATIC",
                            "BlenderGLEW",

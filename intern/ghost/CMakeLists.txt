@@ -86,6 +86,10 @@ if(WITH_VULKAN_BACKEND)
   list(APPEND INC_SYS
     ${VULKAN_INCLUDE_DIR}
   )
+
+  list(APPEND LIB
+    ${VULKAN_LIBRARY}
+  )
 endif()
 
 if(WITH_GHOST_DEBUG)
