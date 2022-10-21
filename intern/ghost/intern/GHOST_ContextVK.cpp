@@ -419,7 +419,6 @@ static bool device_extensions_support(VkPhysicalDevice device, vector<const char
 
 GHOST_TSuccess GHOST_ContextVK::pickPhysicalDevice(vector<const char *> required_exts)
 {
-  /* TODO Pick the best GPU by default OR by name from user settings. */
   m_physical_device = VK_NULL_HANDLE;
 
   uint32_t device_count = 0;
@@ -446,7 +445,6 @@ GHOST_TSuccess GHOST_ContextVK::pickPhysicalDevice(vector<const char *> required
     if (m_surface != VK_NULL_HANDLE) {
       uint32_t format_count;
       vkGetPhysicalDeviceSurfaceFormatsKHR(physical_device, m_surface, &format_count, NULL);
-      /* TODO(fclem) This is where we should check for HDR surface format. */
 
       uint32_t present_count;
       vkGetPhysicalDeviceSurfacePresentModesKHR(physical_device, m_surface, &present_count, NULL);
@@ -538,8 +536,6 @@ static GHOST_TSuccess getPresetQueueFamily(VkPhysicalDevice device,
   vector<VkQueueFamilyProperties> queue_families(queue_family_count);
   vkGetPhysicalDeviceQueueFamilyProperties(device, &queue_family_count, queue_families.data());
 
-  /* TODO(fclem) Prefer using the familly who also has graphic ability.
-   * These may not be the same. */
   *r_queue_index = 0;
   for (int i = 0; i < queue_family_count; i++) {
     VkBool32 present_support = false;
@@ -642,8 +638,6 @@ GHOST_TSuccess GHOST_ContextVK::recordCommandBuffers(void)
       render_pass_info.pClearValues = &clearColor;
 
       vkCmdBeginRenderPass(m_command_buffers[i], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
-
-      /* TODO draw something. */
 
       vkCmdEndRenderPass(m_command_buffers[i]);
     }
