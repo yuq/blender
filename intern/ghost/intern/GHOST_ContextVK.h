@@ -47,9 +47,6 @@ typedef enum {
 } GHOST_TVulkanPlatformType;
 
 class GHOST_ContextVK : public GHOST_Context {
-  /* XR code needs low level graphics data to send to OpenXR. */
-  // friend class GHOST_XrGraphicsBindingOpenGL;
-
  public:
   /**
    * Constructor.
@@ -153,8 +150,7 @@ class GHOST_ContextVK : public GHOST_Context {
 #ifdef _WIN32
   HWND m_hwnd;
 #elif defined(__APPLE__)
-  /* FIXME CAMetalLayer but have issue with linking. */
-  void *m_metal_layer;
+  CAMetalLayer *m_metal_layer;
 #else /* Linux */
   GHOST_TVulkanPlatformType m_platform;
   /* X11 */

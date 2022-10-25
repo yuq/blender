@@ -145,7 +145,6 @@ GHOST_ContextVK::GHOST_ContextVK(bool stereoVisual,
       m_swapchain(VK_NULL_HANDLE),
       m_render_pass(VK_NULL_HANDLE)
 {
-  printf("WARNING: Vulkan support is experimental.\n");
 }
 
 GHOST_ContextVK::~GHOST_ContextVK()
@@ -614,38 +613,6 @@ static GHOST_TSuccess selectPresentMode(VkPhysicalDevice device,
   return GHOST_kFailure;
 }
 
-/* This is only for testing. */
-GHOST_TSuccess GHOST_ContextVK::recordCommandBuffers(void)
-{
-  for (int i = 0; i < m_command_buffers.size(); i++) {
-    VkCommandBufferBeginInfo begin_info = {};
-    begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    begin_info.flags = 0;
-    begin_info.pInheritanceInfo = NULL;
-
-    VK_CHECK(vkBeginCommandBuffer(m_command_buffers[i], &begin_info));
-    {
-      VkRect2D area = {};
-      area.offset = {0, 0};
-      area.extent = m_render_extent;
-      VkClearValue clearColor = {{{0.0f, 0.5f, 0.3f, 1.0f}}};
-      VkRenderPassBeginInfo render_pass_info = {};
-      render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-      render_pass_info.renderPass = m_render_pass;
-      render_pass_info.framebuffer = m_swapchain_framebuffers[i];
-      render_pass_info.renderArea = area;
-      render_pass_info.clearValueCount = 1;
-      render_pass_info.pClearValues = &clearColor;
-
-      vkCmdBeginRenderPass(m_command_buffers[i], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
-
-      vkCmdEndRenderPass(m_command_buffers[i]);
-    }
-    VK_CHECK(vkEndCommandBuffer(m_command_buffers[i]));
-  }
-  return GHOST_kSuccess;
-}
-
 GHOST_TSuccess GHOST_ContextVK::createCommandBuffers(void)
 {
   m_command_buffers.resize(m_swapchain_image_views.size());
@@ -664,8 +631,6 @@ GHOST_TSuccess GHOST_ContextVK::createCommandBuffers(void)
   alloc_info.commandBufferCount = static_cast<uint32_t>(m_command_buffers.size());
 
   VK_CHECK(vkAllocateCommandBuffers(m_device, &alloc_info, m_command_buffers.data()));
-
-  recordCommandBuffers();
 
   return GHOST_kSuccess;
 }
