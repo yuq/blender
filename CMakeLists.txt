@@ -1231,7 +1231,7 @@ endif()
 # Configure Vulkan.
 
 if(WITH_VULKAN_BACKEND)
-  list(APPEND BLENDER_GL_LIBRARIES ${Vulkan_LIBRARY})
+  list(APPEND BLENDER_GL_LIBRARIES ${VULKAN_LIBRARIES})
 
   add_definitions(-DWITH_VULKAN_BACKEND)
 endif()
