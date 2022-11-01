@@ -101,7 +101,8 @@ if(WITH_USD)
 endif()
 
 if(WITH_VULKAN_BACKEND)
-  find_package(VULKAN REQUIRED)
+  find_package(Vulkan REQUIRED)
+  find_package(MoltenVK REQUIRED)
 endif()
 
 if(WITH_OPENSUBDIV)
