@@ -84,12 +84,12 @@ if(WITH_VULKAN_BACKEND)
   )
 
   list(APPEND INC_SYS
-    ${VULKAN_INCLUDE_DIRS}
+    ${Vulkan_INCLUDE_DIRS}
     ${MOLTENVK_INCLUDE_DIRS}
   )
 
   list(APPEND LIB
-    ${VULKAN_LIBRARIES}
+    ${Vulkan_LIBRARIES}
     ${MOLTENVK_LIBRARIES}
   )
 endif()
