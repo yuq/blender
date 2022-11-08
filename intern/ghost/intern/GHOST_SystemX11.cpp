@@ -36,6 +36,10 @@
 #include "GHOST_ContextEGL.h"
 #include "GHOST_ContextGLX.h"
 
+#ifdef WITH_VULKAN_BACKEND
+#  include "GHOST_ContextVK.h"
+#endif
+
 #ifdef WITH_XF86KEYSYM
 #  include <X11/XF86keysym.h>
 #endif

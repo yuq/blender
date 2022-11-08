@@ -20,6 +20,10 @@
 
 #include "GHOST_ContextEGL.h"
 
+#ifdef WITH_VULKAN_BACKEND
+#  include "GHOST_ContextVK.h"
+#endif
+
 #ifdef WITH_INPUT_NDOF
 #  include "GHOST_NDOFManagerUnix.h"
 #endif
@@ -5581,12 +5585,18 @@ static GHOST_Context *createOffscreenContext_impl(GHOST_SystemWayland *system,
 
 GHOST_IContext *GHOST_SystemWayland::createOffscreenContext(GHOST_GLSettings glSettings)
 {
+  /* Create new off-screen window. */
+  wl_surface *wl_surface = wl_compositor_create_surface(wl_compositor());
+
 #ifdef WITH_VULKAN_BACKEND
   const bool debug_context = (glSettings.flags & GHOST_glDebugContext) != 0;
 
   if (glSettings.context_type == GHOST_kDrawingContextTypeVulkan) {
-    GHOST_Context *context = new GHOST_ContextVK(
-        false, GHOST_kVulkanPlatformWayland, 0, NULL, NULL, d->display, 1, 0, debug_context);
+    GHOST_Context *context = new GHOST_ContextVK(false,
+                                                 GHOST_kVulkanPlatformWayland,
+                                                 0, NULL,
+                                                 wl_surface, display_->wl_display,
+                                                 1, 0, debug_context);
 
     if (!context->initializeDrawingContext()) {
       delete context;
@@ -5598,8 +5608,6 @@ GHOST_IContext *GHOST_SystemWayland::createOffscreenContext(GHOST_GLSettings glS
   (void)glSettings;
 #endif
 
-  /* Create new off-screen window. */
-  wl_surface *wl_surface = wl_compositor_create_surface(wl_compositor());
   wl_egl_window *egl_window = wl_surface ? wl_egl_window_create(wl_surface, 1, 1) : nullptr;
 
   GHOST_Context *context = createOffscreenContext_impl(this, display_->wl_display, egl_window);
