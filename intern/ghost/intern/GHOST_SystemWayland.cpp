@@ -5594,9 +5594,13 @@ GHOST_IContext *GHOST_SystemWayland::createOffscreenContext(GHOST_GLSettings glS
   if (glSettings.context_type == GHOST_kDrawingContextTypeVulkan) {
     GHOST_Context *context = new GHOST_ContextVK(false,
                                                  GHOST_kVulkanPlatformWayland,
-                                                 0, NULL,
-                                                 wl_surface, display_->wl_display,
-                                                 1, 0, debug_context);
+                                                 0,
+                                                 NULL,
+                                                 wl_surface,
+                                                 display_->wl_display,
+                                                 1,
+                                                 0,
+                                                 debug_context);
 
     if (!context->initializeDrawingContext()) {
       delete context;

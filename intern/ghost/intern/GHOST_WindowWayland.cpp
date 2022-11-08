@@ -922,10 +922,13 @@ GHOST_Context *GHOST_WindowWayland::newDrawingContext(GHOST_TDrawingContextType 
     case GHOST_kDrawingContextTypeVulkan:
       context = new GHOST_ContextVK(m_wantStereoVisual,
                                     GHOST_kVulkanPlatformWayland,
-                                    0, NULL,
+                                    0,
+                                    NULL,
                                     window_->wl_surface,
                                     system_->wl_display(),
-                                    1, 0, true);
+                                    1,
+                                    0,
+                                    true);
       break;
 #endif
 
